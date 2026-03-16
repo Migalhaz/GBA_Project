@@ -1,0 +1,18 @@
+#ifndef INPUT_H 
+#define INPUT_H
+
+#define REG_KEYINPUT *((volatile uint16_t*)0x04000130)
+
+#define DPAD_RIGHT 0x0010
+#define DPAD_RIGHT_PRESSED !(REG_KEYINPUT & DPAD_RIGHT)
+
+#define DPAD_LEFT 0x0020
+#define DPAD_LEFT_PRESSED !(REG_KEYINPUT & DPAD_LEFT)
+
+#define DPAD_UP 0x0040
+#define DPAD_UP_PRESSED !(REG_KEYINPUT & DPAD_UP)
+
+#define DPAD_DOWN 0x0080
+#define DPAD_DOWN_PRESSED !(REG_KEYINPUT & DPAD_DOWN)
+
+#endif
