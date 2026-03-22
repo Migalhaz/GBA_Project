@@ -9,30 +9,32 @@ int main()
   volatile uint16_t* videoBuffer = (volatile uint16_t*)VRAM;
 
   uint32_t xPos = 50;
-  uint32_t yPos = 50;
-  
+  uint32_t yPos = 50;  
+
   while (1)
   {
-    draw_rect(videoBuffer, xPos, yPos, 10, 20, 0);
+    uint16_t inputSnapshot = REG_KEYINPUT;
 
-    if (DPAD_RIGHT_PRESSED) // DPAD RIGHT ADDRESS
+    draw_rect(videoBuffer, xPos, yPos, 10, 10, 0);
+
+    if (DPAD_RIGHT_PRESSED(inputSnapshot)) // DPAD RIGHT ADDRESS
     {
       ++xPos;
     }
-    if (DPAD_LEFT_PRESSED) // DPAD LEFT ADDRESS
+    if (DPAD_LEFT_PRESSED(inputSnapshot)) // DPAD LEFT ADDRESS
     {
       --xPos;
     }
-    if (DPAD_UP_PRESSED) // DPAD UP ADDRESS
+    if (DPAD_UP_PRESSED(inputSnapshot)) // DPAD UP ADDRESS
     {
       --yPos;
     }
-    if (DPAD_DOWN_PRESSED) // DPAD DOWN ADDRESS
+    if (DPAD_DOWN_PRESSED(inputSnapshot)) // DPAD DOWN ADDRESS
     {
       ++yPos;
     }
 
-    draw_rect(videoBuffer, xPos, yPos, 10, 20, 0x001F << 3);
+    draw_rect(videoBuffer, xPos, yPos, 10, 10, 0x001F << 3);
 
     wait_VBLANK();
   }
