@@ -10,31 +10,45 @@ int main()
 
   uint32_t xPos = 50;
   uint32_t yPos = 50;  
+  uint32_t width = 10;
+  uint32_t height = 10;
 
   while (1)
   {
     uint16_t inputSnapshot = REG_KEYINPUT;
 
-    draw_rect(videoBuffer, xPos, yPos, 10, 10, 0);
+    draw_rect(videoBuffer, xPos, yPos, width, height, 0);
 
     if (DPAD_RIGHT_PRESSED(inputSnapshot)) // DPAD RIGHT ADDRESS
     {
-      ++xPos;
+      if ((xPos + width) < SCREEN_W) 
+      {
+        ++xPos;
+      }
     }
     if (DPAD_LEFT_PRESSED(inputSnapshot)) // DPAD LEFT ADDRESS
     {
-      --xPos;
+      if (xPos > 0)
+      {
+        --xPos;
+      }
     }
     if (DPAD_UP_PRESSED(inputSnapshot)) // DPAD UP ADDRESS
     {
-      --yPos;
+      if (yPos > 0)
+      {
+        --yPos;
+      }
     }
     if (DPAD_DOWN_PRESSED(inputSnapshot)) // DPAD DOWN ADDRESS
     {
-      ++yPos;
+      if ((yPos + height) < SCREEN_H)
+      {
+        ++yPos;
+      }
     }
 
-    draw_rect(videoBuffer, xPos, yPos, 10, 10, 0x001F << 3);
+    draw_rect(videoBuffer, xPos, yPos, width, height, 0x001F);
 
     wait_VBLANK();
   }
