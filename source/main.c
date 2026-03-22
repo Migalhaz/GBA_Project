@@ -2,6 +2,7 @@
 #include "render.h"
 #include "input.h"
 
+
 int main()
 {
   render_setup();
@@ -19,7 +20,9 @@ int main()
     uint16_t inputSnapshot = REG_KEYINPUT;
 
     draw_rect(videoBuffer, xPos, yPos, width, height, 0);
-
+    draw_rect(videoBuffer, 1, 3, width, 1, 0);
+    draw_rect(videoBuffer, 1, 8, height, 1, 0);
+    
     if (DPAD_RIGHT_PRESSED(inputSnapshot))
     {
       if ((xPos + width) < SCREEN_W) 
@@ -94,18 +97,18 @@ int main()
     {
       #define RED 0x001F
       color = RED;
-      #undef RED
     }
 
     if (KEY_START_PRESSED(inputSnapshot))
     {
       #define GREEN 0x02E0
       color = GREEN;
-      #undef GREEN
     }
 
 
     draw_rect(videoBuffer, xPos, yPos, width, height, color);
+    draw_rect(videoBuffer, 1, 3, width, 1, RED);
+    draw_rect(videoBuffer, 1, 8, height, 1, GREEN);
 
     wait_VBLANK();
   }
