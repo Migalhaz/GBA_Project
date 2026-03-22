@@ -12,6 +12,7 @@ int main()
   uint32_t yPos = 50;  
   uint32_t width = 10;
   uint32_t height = 10;
+  uint32_t color = 0x0001F;
 
   while (1)
   {
@@ -19,28 +20,28 @@ int main()
 
     draw_rect(videoBuffer, xPos, yPos, width, height, 0);
 
-    if (DPAD_RIGHT_PRESSED(inputSnapshot)) // DPAD RIGHT ADDRESS
+    if (DPAD_RIGHT_PRESSED(inputSnapshot))
     {
       if ((xPos + width) < SCREEN_W) 
       {
         ++xPos;
       }
     }
-    if (DPAD_LEFT_PRESSED(inputSnapshot)) // DPAD LEFT ADDRESS
+    if (DPAD_LEFT_PRESSED(inputSnapshot))
     {
       if (xPos > 0)
       {
         --xPos;
       }
     }
-    if (DPAD_UP_PRESSED(inputSnapshot)) // DPAD UP ADDRESS
+    if (DPAD_UP_PRESSED(inputSnapshot))
     {
       if (yPos > 0)
       {
         --yPos;
       }
     }
-    if (DPAD_DOWN_PRESSED(inputSnapshot)) // DPAD DOWN ADDRESS
+    if (DPAD_DOWN_PRESSED(inputSnapshot))
     {
       if ((yPos + height) < SCREEN_H)
       {
@@ -48,7 +49,63 @@ int main()
       }
     }
 
-    draw_rect(videoBuffer, xPos, yPos, width, height, 0x001F);
+    if (KEY_A_PRESSED(inputSnapshot))
+    {
+      #define MAX_HEIGHT 30
+      if (height < MAX_HEIGHT) 
+      {
+        ++height;
+      }
+      #undef MAX_HEIGHT
+    }
+
+    if (KEY_B_PRESSED(inputSnapshot))
+    {
+      #define MIN_HEIGHT 5
+      if (height > MIN_HEIGHT)
+      {
+        --height;
+      }
+      #undef MIN_HEIGHT
+    }
+
+    if (KEY_R_PRESSED(inputSnapshot))
+    {
+      #define MAX_WIDTH 30
+      if (width < MAX_WIDTH)
+      {
+        ++width;
+      }
+
+      #undef MAX_WIDTH
+    }
+
+    if (KEY_L_PRESSED(inputSnapshot))
+    {
+      #define MIN_WIDTH 5
+      if (width > MIN_WIDTH)
+      {
+        --width;
+      }
+      #undef MIN_WIDTH
+    }
+
+    if (KEY_SELECT_PRESSED(inputSnapshot))
+    {
+      #define RED 0x001F
+      color = RED;
+      #undef RED
+    }
+
+    if (KEY_START_PRESSED(inputSnapshot))
+    {
+      #define GREEN 0x02E0
+      color = GREEN;
+      #undef GREEN
+    }
+
+
+    draw_rect(videoBuffer, xPos, yPos, width, height, color);
 
     wait_VBLANK();
   }
