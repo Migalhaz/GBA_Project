@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include "render.h"
 #include "input.h"
-
+#include "rect.h"
 
 int main()
 {
@@ -9,106 +9,58 @@ int main()
 
   volatile uint16_t* videoBuffer = (volatile uint16_t*)VRAM;
 
-  uint32_t xPos = 50;
-  uint32_t yPos = 50;  
-  uint32_t width = 10;
-  uint32_t height = 10;
-  uint32_t color = 0x0001F;
+  Rect obj;
+  obj.transform.x = 10;
+  obj.transform.y = 10;
+  obj.transform.width = 10;
+  obj.transform.height = 10;
+  obj.color = 0x001F;
+  RigidBody objRig;
+  objRig.velocityX = 0;
+  objRig.velocityY = 0;
+  #define OBJ_VELOCITY 1
 
   while (1)
   {
     uint16_t inputSnapshot = REG_KEYINPUT;
 
-    draw_rect(videoBuffer, xPos, yPos, width, height, 0);
-    draw_rect(videoBuffer, 1, 3, width, 1, 0);
-    draw_rect(videoBuffer, 1, 8, height, 1, 0);
+    draw_rect(videoBuffer, obj.transform.x, obj.transform.y, obj.transform.width, obj.transform.height, 0);
     
     if (DPAD_RIGHT_PRESSED(inputSnapshot))
     {
-      if ((xPos + width) < SCREEN_W) 
+      if (obj.transform.x+obj.transform.width < SCREEN_W) 
       {
-        ++xPos;
+        objRig.velocityX = OBJ_VELOCITY;
       }
     }
     if (DPAD_LEFT_PRESSED(inputSnapshot))
     {
-      if (xPos > 0)
+      if (obj.transform.x > 0)
       {
-        --xPos;
+        objRig.velocityX = -OBJ_VELOCITY;
       }
     }
     if (DPAD_UP_PRESSED(inputSnapshot))
     {
-      if (yPos > 0)
+      if (obj.transform.y > 0)
       {
-        --yPos;
+        objRig.velocityY = -OBJ_VELOCITY;
       }
     }
     if (DPAD_DOWN_PRESSED(inputSnapshot))
     {
-      if ((yPos + height) < SCREEN_H)
+      if (obj.transform.y+obj.transform.height < SCREEN_H)
       {
-        ++yPos;
+        objRig.velocityY = OBJ_VELOCITY;
       }
     }
 
-    if (KEY_A_PRESSED(inputSnapshot))
-    {
-      #define MAX_HEIGHT 30
-      if (height < MAX_HEIGHT) 
-      {
-        ++height;
-      }
-      #undef MAX_HEIGHT
-    }
+    obj.transform.x += objRig.velocityX;
+    obj.transform.y += objRig.velocityY;
 
-    if (KEY_B_PRESSED(inputSnapshot))
-    {
-      #define MIN_HEIGHT 5
-      if (height > MIN_HEIGHT)
-      {
-        --height;
-      }
-      #undef MIN_HEIGHT
-    }
-
-    if (KEY_R_PRESSED(inputSnapshot))
-    {
-      #define MAX_WIDTH 30
-      if (width < MAX_WIDTH)
-      {
-        ++width;
-      }
-
-      #undef MAX_WIDTH
-    }
-
-    if (KEY_L_PRESSED(inputSnapshot))
-    {
-      #define MIN_WIDTH 5
-      if (width > MIN_WIDTH)
-      {
-        --width;
-      }
-      #undef MIN_WIDTH
-    }
-
-    if (KEY_SELECT_PRESSED(inputSnapshot))
-    {
-      #define RED 0x001F
-      color = RED;
-    }
-
-    if (KEY_START_PRESSED(inputSnapshot))
-    {
-      #define GREEN 0x02E0
-      color = GREEN;
-    }
-
-
-    draw_rect(videoBuffer, xPos, yPos, width, height, color);
-    draw_rect(videoBuffer, 1, 3, width, 1, RED);
-    draw_rect(videoBuffer, 1, 8, height, 1, GREEN);
+    objRig.velocityX = 0;
+    objRig.velocityY = 0;
+    draw_rect(videoBuffer, obj.transform.x, obj.transform.y, obj.transform.width, obj.transform.height, obj.color);
 
     wait_VBLANK();
   }
