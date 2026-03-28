@@ -19,8 +19,8 @@ typedef struct
 
 typedef struct
 {
-  char velocityX;
-  char velocityY;
+  signed char velocityX;
+  signed char velocityY;
 } RigidBody;
 
 #endif
