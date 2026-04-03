@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include "render.h"
 #include "input.h"
+#include "fpm.h"
 
 int main()
 {
