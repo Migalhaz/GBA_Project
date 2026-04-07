@@ -1,9 +1,13 @@
 #include <stdint.h>
 #include "render.h"
 #include "input.h"
+#include "gamestates.h"
 
 int main()
 {
+
+  currentState = STATE_STARTING;
+
   render_setup();
 
   volatile uint16_t* videoBuffer = (volatile uint16_t*)VRAM;
