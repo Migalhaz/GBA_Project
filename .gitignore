@@ -1,3 +1,6 @@
 
 # Exclude the /game directory i.e. the build file
 /game
+
+# editor
+compile_flags.txt
